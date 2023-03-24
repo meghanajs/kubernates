@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydata
+spec:
+  selector:
+    matchLabels:
+      app: just-testing
+  template:
+    metadata:
+      labels:
+        app: just-testing
+    spec:
+      containers:
+        - name: just-testing
+          image: busybox
+          resources:
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: web-variables
+          env:
+            - name: web-password
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: web-password
